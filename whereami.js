@@ -34,6 +34,32 @@ function loadJSON(data_file, callback)
    http_request.send();
 }
 
+var make_map = function mm(vector_source, lon, lat, zoom)
+{
+    var vector_layer = new ol.source.Vector({
+        source: vector_source
+    });
+    var map = new ol.Map({
+        target: 'map',
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.OSM()
+            }),
+        ],
+        view: new ol.View({
+            center: ol.proj.fromLonLat([lon, lat]),
+            zoom: zoom
+        })
+    });
+
+    var overlay = new ol.Overlay({
+        element: document.getElementById('overlay'),
+        positioning: 'bottom-center'
+    });    
+
+    return map;
+}
+
     /*
     *
     */            
@@ -41,7 +67,7 @@ function loadJSON(data_file, callback)
 var cb = function callback(obj)
 {
     var circle = new ol.style.Circle({
-        radius: 6,
+        radius: 2,
         stroke: new ol.style.Stroke({
             color: [0, 0, 255, 1],
             width: 4.5
@@ -81,11 +107,21 @@ var cb = function callback(obj)
 
     map.addLayer(points);
 
+    var doc_name = document.getElementById('name');
+
     map.on("click", function(e) {
-        var tr = null;
         map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
             var name = feature.get('name');
             alert(name);
+            //doc_name.innerHTML = name;
+        })
+    });
+
+    map.on("pointermove", function(e) {
+        map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
+            var name = feature.get('name');
+            //alert(name);
+            doc_name.innerHTML = name;
         })
     });
 }
