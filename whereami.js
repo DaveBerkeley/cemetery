@@ -92,6 +92,8 @@ var cb = function callback(obj)
         var feature = new ol.Feature({
             //type: 'abcd',
             name: item.name,
+            title: item.title,
+            date: item.date,
             geometry: pt,
         });
         feature.setStyle(style);
@@ -112,7 +114,9 @@ var cb = function callback(obj)
     map.on("click", function(e) {
         map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
             var name = feature.get('name');
-            alert(name);
+            var title = feature.get('title');
+            var date = feature.get('date');
+            alert(name + '\n' + title + '\n' + date);
             //doc_name.innerHTML = name;
         })
     });
