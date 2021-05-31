@@ -4,30 +4,52 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/css/ol.css" type="text/css">
     <style>
       .map {
-        height: 800px;
+        height: 700px;
         width: 800px;
       }
     </style>
     <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js"></script>
     <title>Ford Park Cemetery</title>
     <script src="whereami.js"></script>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+
+   <script>
+
+    function make_map(vector_source, lon, lat) {
+        var vector_layer = new ol.source.Vector({
+            source: vector_source
+        });
+        var map = new ol.Map({
+            target: 'map',
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM()
+                }),
+            ],
+            view: new ol.View({
+                center: ol.proj.fromLonLat([-4.1445, 50.38352]),
+                zoom: 17
+            })
+        });
+
+        var overlay = new ol.Overlay({
+            element: document.getElementById('overlay'),
+            positioning: 'bottom-center'
+        });    
+
+        return map;
+    }
+    </script>
+
+
   </head>
   <body>
     <h2>Ford Park Cemetery</h2>
     <div id="map" class="map"></div>
     <script type="text/javascript">
-      var map = new ol.Map({
-        target: 'map',
-        layers: [
-          new ol.layer.Tile({
-            source: new ol.source.OSM()
-          })
-        ],
-        view: new ol.View({
-          center: ol.proj.fromLonLat([-4.1445, 50.38352]),
-          zoom: 17
-        })
-      });
+      var map = make_map();
+      var data_file = "http://localhost:8080/fpc.json";
+      loadJSON(data_file, cb);
     </script>
   </body>
 </html>
