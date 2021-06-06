@@ -94,6 +94,7 @@ var cb = function callback(obj)
             name: item.name,
             title: item.title,
             date: item.date,
+            photo: item.photo,
             geometry: pt,
         });
         feature.setStyle(style);
@@ -109,24 +110,36 @@ var cb = function callback(obj)
 
     map.addLayer(points);
 
-    var doc_name = document.getElementById('name');
+    var doc_coord = document.getElementById('coord');
 
-    map.on("click", function(e) {
-        map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
+    var overlay = new ol.Overlay({
+        element: document.getElementById('overlay'),
+        positioning: 'bottom-center',
+    });    
+
+    map.on("click", function(event) {
+        overlay.setPosition(undefined);
+        map.forEachFeatureAtPixel(event.pixel, function (feature, layer) {
             var name = feature.get('name');
             var title = feature.get('title');
             var date = feature.get('date');
-            alert(name + '\n' + title + '\n' + date);
-            //doc_name.innerHTML = name;
+            var photo = feature.get('photo');
+
+            var element = overlay.getElement();
+            var html =  name + '<br>died: ' + date + '<br>' + title + '<br>';
+            //element.innerHTML = name + '<br>' + title + '<br>' + date + '<br>' + <img src="' + photo + '">';
+            html += '<img width="150" src="photos/' + photo + '">'
+            element.innerHTML = html;
+            var coord = event.coordinate;
+            overlay.setPosition(coord);
+            map.addOverlay(overlay);
         })
     });
 
-    map.on("pointermove", function(e) {
-        map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
-            var name = feature.get('name');
-            //alert(name);
-            doc_name.innerHTML = name;
-        })
+    map.on("pointermove", function(event) {
+        var coord = event.coordinate;
+        var degrees = ol.proj.transform(coord, 'EPSG:3857', 'EPSG:4326');
+        doc_coord.innerHTML = degrees;
     });
 }
 
