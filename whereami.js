@@ -39,12 +39,30 @@ var make_map = function mm(vector_source, lon, lat, zoom)
     var vector_layer = new ol.source.Vector({
         source: vector_source
     });
+    var layer = new ol.layer.Tile({ source: new ol.source.OSM() });
+
+/*
+    var extent = [0, 0, 1024, 968];
+
+    var projection = new ol.proj.Projection({
+        code: 'xkcd-image',
+        units: 'pixels',
+        extent: extent,
+    });
+    var layer = new ol.renderer.canvas.ImageLayer({
+      source: new ol.source.ImageStatic({
+        attributions: '© <a href="http://xkcd.com/license.html">xkcd</a>',
+        url: 'https://imgs.xkcd.com/comics/online_communities.png',
+        projection: projection,
+        imageExtent: extent,
+      })
+    });
+*/
+
     var map = new ol.Map({
         target: 'map',
         layers: [
-            new ol.layer.Tile({
-                source: new ol.source.OSM()
-            }),
+            layer,
         ],
         view: new ol.View({
             center: ol.proj.fromLonLat([lon, lat]),
