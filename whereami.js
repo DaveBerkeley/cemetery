@@ -113,6 +113,7 @@ var cb = function callback(obj)
             title: item.title,
             date: item.date,
             photo: item.photo,
+            html: item.html,
             geometry: pt,
         });
         feature.setStyle(style);
@@ -142,10 +143,14 @@ var cb = function callback(obj)
             var title = feature.get('title');
             var date = feature.get('date');
             var photo = feature.get('photo');
+            var more = feature.get('html');
 
             var element = overlay.getElement();
             var html =  name + '<br>died: ' + date + '<br>' + title + '<br>';
-            //element.innerHTML = name + '<br>' + title + '<br>' + date + '<br>' + <img src="' + photo + '">';
+            if (more)
+            {
+                html += '<a target="_blank" href="./docs/' + more + '"> more details </a>' + '<br>'
+            }
             html += '<img width="150" src="photos/' + photo + '">'
             element.innerHTML = html;
             var coord = event.coordinate;

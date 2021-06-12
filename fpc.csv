@@ -1,4 +1,4 @@
-"date","name","title","photo","lon","lat","text"
+"date","name","title","photo","lon","lat","text","html"
 02/04/1874,"John Williams Coath","Murdered by Savages","IMG_20200524_172140.jpg",-4.14317897,50.383091048,
 02/03/1902,"Linnaeus Tripe","Photographer",IMG_20200613_160252.jpg,-4.144399514,50.383984072,
 15/04/1912,"Henry Creese","Died on the Titanic",IMG_20200504_131904.jpg,-4.145698075,50.384206219,
@@ -30,3 +30,4 @@
 16/05/1908,"William Reeves","fell into Cattedown Quarry, aged 6",IMG_20210516_154707.jpg,-4.142502853,50.384164258,
 23/04/1860,"William Henry Vivian","washed overboard and drowned on his voyage from the Mauritius to England",IMG_20210516_155853.jpg,-4.143838389,50.382709883,
 10/01/1941,"Albert Edwin Tall","Lost on the HMS Illustrious",IMG_20210531_162740.jpg,-4.14608986,50.385001168,
+26/01/1885,"Captain Charles Armstrong","Killed by his crew",IMG_20210611_135720.jpg,-4.14416592,50.3835611,Captain_Armstrong.docx,CHA_22_5.html
