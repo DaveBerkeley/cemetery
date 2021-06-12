@@ -1,15 +1,15 @@
 
 .PHONY: docs
 
-docs:
+docs: fpc.json
 	./gen_docs.py
 
-fpc.json: fpc.csv docs
+fpc.json: fpc.csv
 	./csv2json.py  fpc.csv > fpc.json
 
-upload: fpc.json
+upload: docs
 	rsync -rptvu index.html fpc.json whereami.js photos docs xanthos:/www/whatdowewant/fpc
 
-serve: fpc.json
+serve: docs
 	python3 -m http.server 8080
 
