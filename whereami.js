@@ -84,6 +84,14 @@ var make_map = function mm(vector_source, lon, lat, zoom)
 
 var cb = function callback(obj)
 {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const name_match = urlParams.get('name');
+    var search = document.getElementById('search')
+    search.innerHTML = name_match;
+
+    var name_found = null;
+
     var circle = new ol.style.Circle({
         radius: 2,
         stroke: new ol.style.Stroke({
@@ -92,8 +100,21 @@ var cb = function callback(obj)
         })
     });
 
+    var found_circle = new ol.style.Circle({
+        radius: 2,
+        stroke: new ol.style.Stroke({
+            color: [255, 0, 0, 1],
+            width: 4.5
+        })
+    });
+
     var style = new ol.style.Style({
         image: circle,
+        zIndex: 2
+    });
+
+    var found_style = new ol.style.Style({
+        image: found_circle,
         zIndex: 2
     });
 
@@ -116,7 +137,18 @@ var cb = function callback(obj)
             html: item.html,
             geometry: pt,
         });
-        feature.setStyle(style);
+
+        var s = style;
+
+        if (name_match)
+        {
+            if (item.name.search(name_match) != -1)
+            {
+                s = found_style;
+            }
+        }
+
+        feature.setStyle(s);
         features.push(feature);
     }
  
@@ -157,6 +189,7 @@ var cb = function callback(obj)
             overlay.setPosition(coord);
             map.addOverlay(overlay);
         })
+
     });
 
     map.on("pointermove", function(event) {

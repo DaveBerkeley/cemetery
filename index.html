@@ -17,12 +17,20 @@
   <body>
     <h2>Ford Park Cemetery</h2>
     <div id="map" class="map"></div>
+    
+    <form name="namesearch" method="get">
+        <span> search </span>
+        <input type="text" name="name">
+        <span id="search"></span>
+        <span id="coord"></span>
+    </form>
+
     <script type="text/javascript">
       var map = make_map(null, -4.1436, 50.38352, 17);
       var data_file = "fpc.json";
       loadJSON(data_file, cb);
     </script>
     <div id="overlay" style="background-color: white; border-radius: 10px; border: 1px solid black; padding: 5px 10px;"> over </div>
-    <div id="coord"> coord </div>
+    
   </body>
 </html>
