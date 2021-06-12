@@ -15,7 +15,7 @@ In 1852 the British imposed a poll tax on the locals. In 1854 the steamer HMS Sc
 
 ![steamer HMS Scourge shelling Accra](../photos/ghana-hm-steamer-scourge-attacking-danish-accra.-gold-coast-ghana-1855-86909-p.jpg)
 
-"In 1852 the British instituted a poll tax of 1 shilling per man, woman and child. Labadi, Osu, Teshie and other Ga villages refused to pay and on September 13, 1854 they were bombarded by the British warship the ?HMS Scourge, during the celebration of the annual Homowo Festival."
+"In 1852 the British instituted a poll tax of 1 shilling per man, woman and child. Labadi, Osu, Teshie and other Ga villages refused to pay and on September 13, 1854 they were bombarded by the British warship the HMS Scourge, during the celebration of the annual Homowo Festival."
 
 [Ghanaian Museum](https://twitter.com/ghanaianmuseum/status/1172804968895696898)
 
