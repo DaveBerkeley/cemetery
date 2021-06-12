@@ -181,9 +181,14 @@ var cb = function callback(obj)
             var html =  name + '<br>died: ' + date + '<br>' + title + '<br>';
             if (more)
             {
-                html += '<a target="_blank" href="./docs/' + more + '"> more details </a>' + '<br>'
+                html += '<a target="_blank" href="docs/' + more + '"> more details </a>' + '<br>'
             }
-            html += '<img width="150" src="photos/' + photo + '">'
+            if (photo)
+            {
+                html += '<a target="_blank" href="photos/' + photo + '">'
+                html += '<img width="150" src="photos/' + photo + '">'
+                html += '</a>'
+            }
             element.innerHTML = html;
             var coord = event.coordinate;
             overlay.setPosition(coord);
