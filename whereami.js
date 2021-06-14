@@ -34,30 +34,16 @@ function loadJSON(data_file, callback)
    http_request.send();
 }
 
+    /*
+     *
+     */
+
 var make_map = function mm(vector_source, lon, lat, zoom)
 {
     var vector_layer = new ol.source.Vector({
         source: vector_source
     });
     var layer = new ol.layer.Tile({ source: new ol.source.OSM() });
-
-/*
-    var extent = [0, 0, 1024, 968];
-
-    var projection = new ol.proj.Projection({
-        code: 'xkcd-image',
-        units: 'pixels',
-        extent: extent,
-    });
-    var layer = new ol.renderer.canvas.ImageLayer({
-      source: new ol.source.ImageStatic({
-        attributions: '© <a href="http://xkcd.com/license.html">xkcd</a>',
-        url: 'https://imgs.xkcd.com/comics/online_communities.png',
-        projection: projection,
-        imageExtent: extent,
-      })
-    });
-*/
 
     var map = new ol.Map({
         target: 'map',
@@ -70,20 +56,76 @@ var make_map = function mm(vector_source, lon, lat, zoom)
         })
     });
 
-    var overlay = new ol.Overlay({
-        element: document.getElementById('overlay'),
-        positioning: 'bottom-center'
-    });    
-
     return map;
 }
 
     /*
+     *
+     */
+
+function render_feature(feature)
+{
+    var name = feature.get('name');
+    var title = feature.get('title');
+    var date = feature.get('date');
+    var photo = feature.get('photo');
+    var more = feature.get('html');
+
+    var html =  name + '<br>died: ' + date + '<br>';
+    if (title)
+    {
+        html += title + '<br>';
+    }
+    if (more)
+    {
+        html += '<a target="_blank" href="docs/' + more + '"> more details </a>' + '<br>'
+    }
+    if (photo)
+    {
+        html += '<a target="_blank" href="photos/' + photo + '">'
+        html += '<img width="150" src="photos/' + photo + '">'
+        html += '</a>'
+    }
+    return html;
+}
+
+    /*
+     *
+     */
+
+var render_list_cache = [];
+
+function render_list(found)
+{
+    var html = '';
+
+    render_list_cache = [];
+    for (var i = 0; i < found.length; i++) {
+        var feature = found[i];
+        var name = feature.get('name');
+        var title = feature.get('title');
+        var date = feature.get('date');
+        var photo = feature.get('photo');
+        var more = feature.get('html');
+        html += '<span id="feature_' + i + '">' + name + '</span>' + '<br>';
+        var d = {
+            idx: i,
+            feature: feature,
+        }
+        // TODO : how to click on name to open pop-up for that feature?
+        render_list_cache.push(d);
+    }
+    
+    return html
+}
+
+   /*
     *
-    */            
+    */
 
 var cb = function callback(obj)
 {
+    // Handle any search criteria
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const name_match = urlParams.get('name');
@@ -100,17 +142,17 @@ var cb = function callback(obj)
         })
     });
 
+    var style = new ol.style.Style({
+        image: circle,
+        zIndex: 2
+    });
+
     var found_circle = new ol.style.Circle({
         radius: 2,
         stroke: new ol.style.Stroke({
             color: [255, 0, 0, 1],
             width: 4.5
         })
-    });
-
-    var style = new ol.style.Style({
-        image: circle,
-        zIndex: 2
     });
 
     var found_style = new ol.style.Style({
@@ -140,6 +182,7 @@ var cb = function callback(obj)
 
         var s = style;
 
+        // Change the style for matched items
         if (name_match)
         {
             if (item.name.search(name_match) != -1)
@@ -163,40 +206,46 @@ var cb = function callback(obj)
 
     var doc_coord = document.getElementById('coord');
 
+    // get the pop-up
     var overlay = new ol.Overlay({
         element: document.getElementById('overlay'),
         positioning: 'bottom-center',
     });    
 
+    map.addOverlay(overlay);
+
     map.on("click", function(event) {
         overlay.setPosition(undefined);
-        map.forEachFeatureAtPixel(event.pixel, function (feature, layer) {
-            var name = feature.get('name');
-            var title = feature.get('title');
-            var date = feature.get('date');
-            var photo = feature.get('photo');
-            var more = feature.get('html');
 
-            var element = overlay.getElement();
-            var html =  name + '<br>died: ' + date + '<br>' + title + '<br>';
-            if (more)
-            {
-                html += '<a target="_blank" href="docs/' + more + '"> more details </a>' + '<br>'
-            }
-            if (photo)
-            {
-                html += '<a target="_blank" href="photos/' + photo + '">'
-                html += '<img width="150" src="photos/' + photo + '">'
-                html += '</a>'
-            }
-            element.innerHTML = html;
-            var coord = event.coordinate;
-            overlay.setPosition(coord);
-            map.addOverlay(overlay);
+        // create a list of found items at this pixel location
+        var found = [];
+        map.forEachFeatureAtPixel(event.pixel, function(feature, layer) {
+            found.push(feature);
         })
 
+        if (found.length == 0)
+        {
+            // no matches
+            return;
+        }
+
+        var element = overlay.getElement();
+
+        if (found.length == 1)
+        {
+            // single match
+            element.innerHTML = render_feature(found[0]);
+        }
+        else
+        {
+            // render a list of matches
+            element.innerHTML = render_list(found);
+        }
+
+        overlay.setPosition(event.coordinate);
     });
 
+    // show lon/lat continuously
     map.on("pointermove", function(event) {
         var coord = event.coordinate;
         var degrees = ol.proj.transform(coord, 'EPSG:3857', 'EPSG:4326');
