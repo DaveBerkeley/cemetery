@@ -93,35 +93,45 @@ function render_feature(feature)
      *
      */
 
-var render_list_cache = [];
+// Global array of features, one per record
+var features = [];
 
-function render_list(found)
-{
-    var html = '';
-
-    render_list_cache = [];
-    for (var i = 0; i < found.length; i++) {
-        var feature = found[i];
-        var name = feature.get('name');
-        var title = feature.get('title');
-        var date = feature.get('date');
-        var photo = feature.get('photo');
-        var more = feature.get('html');
-        html += '<span id="feature_' + i + '">' + name + '</span>' + '<br>';
-        var d = {
-            idx: i,
-            feature: feature,
-        }
-        // TODO : how to click on name to open pop-up for that feature?
-        render_list_cache.push(d);
-    }
-    
-    return html
-}
+// Overlay  pop-up 
+var overlay = undefined;
 
    /*
     *
     */
+
+var select_feature  = function(idx)
+{
+    var feature = features[idx];
+    var html = render_feature(feature);
+    var element = overlay.getElement();
+    element.innerHTML = html;
+};
+
+function render_list(found)
+{
+    var html = '<ul>';
+
+    // Generate list of records at this location
+    for (var i = 0; i < found.length; i++) {
+        var feature = found[i];
+        var name = feature.get('name');
+        var date = feature.get('date');
+        var idx = feature.get('idx');
+        var fn = 'onclick="select_feature(' + idx + ')"';
+        html += '<li><a ' + fn + '>' + name + ' died: ' + date + '</a>' + '<br></li>';
+    }
+ 
+    html += '</ul>';
+    return html
+}
+
+    /*
+     *
+     */
 
 var cb = function callback(obj)
 {
@@ -160,8 +170,7 @@ var cb = function callback(obj)
         zIndex: 2
     });
 
-    var features = [];
-
+    features = [];
     // Plot each item
     for (var i = 0; i < obj.length; i++) {
         var item = obj[i];
@@ -177,6 +186,7 @@ var cb = function callback(obj)
             date: item.date,
             photo: item.photo,
             html: item.html,
+            idx: i,
             geometry: pt,
         });
 
@@ -207,7 +217,7 @@ var cb = function callback(obj)
     var doc_coord = document.getElementById('coord');
 
     // get the pop-up
-    var overlay = new ol.Overlay({
+    overlay = new ol.Overlay({
         element: document.getElementById('overlay'),
         positioning: 'bottom-center',
     });    
