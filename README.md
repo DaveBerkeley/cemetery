@@ -6,7 +6,7 @@ Python code to generate a simple static website intended to display information 
 During the first pandemic lockdown in 2020 I started exploring [Ford Park Cemetery][1] in Plymouth. This Victorian Cemetery, founded in 1848, contains many interesting monuments. I started making notes on some of them and began to need a way to present the information.
 
 The first grave to make me sit up and take notice was that of 
-John Williams Coath. It says on is gravestone that he was "murdered by savages". With a bit of searching I found the whole story had been researched and recorded.
+John Williams Coath. It says on his gravestone that he was "murdered by savages". With a bit of searching I found the whole story had been researched and recorded.
 
 ![murdered by savages](photos/IMG_20200524_172140.jpg)
 
@@ -14,7 +14,7 @@ I began to look more closely at the graves. I found many interesting and some tr
 
 I found managers of slave mines in Brazil, a man killed in a gunpowder magazine explosion in Accra, a tragic story of misunderstanding that resulted in 2 officers being shot dead in Torquay during WWI.
 
-The victims of military hubris that resulted in the loss of the HMS Monmouth at the Battle of Coronel in 1914. The crew of an early submarine that sank with all hands in Plymouth Sound.
+The victims of military hubris that resulted in the loss of the HMS Monmouth at the Battle of Coronel in 1914. The crew of an early submarine that sank with all hands in Plymouth Sound in 1905.
 
 There are troops the were killed in Ireland, during the war for independence in 1920/21. So I learned about the events that led up to their deaths.
 
@@ -46,6 +46,12 @@ The python program gen_docs.py is used to convert the input documents into HTML.
 
 The resulting HTML files are saved in 'docs'.
 
+The file 'fpc.json' is created by csv2json.py and contains a 
+[JSON](https://www.json.org/json-en.html) file containing all the data needed by the Javascript runtime.
+
+My experimental site is currently at
+[https://www.whatdowewant.co.uk/fpc/index.html](https://www.whatdowewant.co.uk/fpc/index.html)
+
 The Makefile has a few simple options. To test the site you can run
 
     make serve
@@ -54,13 +60,11 @@ You can then navigate to
 [http://localhost:8080](http://localhost:8080)
 to view the generated site locally.
 
-The file 'fpc.json' is created by csv2json.py and contains a 
-[JSON](https://www.json.org/json-en.html) file containing all the data needed by the Javascript runtime.
+    make upload
+
+Will upload the static web data to a webserver using 'rsync'. Obviously you will need ssh access to your webserver and you will need to change the server name and path to suit you site.
 
 The file 'whereami.js' contains the Javascript run-time used to run the site. I don't claim to be good at Javascript and would welcome improvements to this file.
-
-My experimental site is currently at
-[https://www.whatdowewant.co.uk/fpc/index.html](https://www.whatdowewant.co.uk/fpc/index.html)
 
 FIN
 
