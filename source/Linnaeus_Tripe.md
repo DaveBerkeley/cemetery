@@ -3,7 +3,7 @@ Linnaeus Tripe
 
 [wikipedia](https://en.wikipedia.org/wiki/Linnaeus_Tripe)
 
-[British Library search](http://explore.bl.uk/primo_library/libweb/action/dlSearch.do?query=any,contains,Tripe,+Linnaeus&vid=BLVU1&institution=BL&search_scope=LSCOP-WEBSITE&tab=website_tab)
+[British Library search](https://bll01.primo.exlibrisgroup.com/discovery/search?query=any,contains,Linnaeus%20Tripe&tab=LibraryCatalog&search_scope=Not_BL_Suppress&vid=44BL_INST:BLL01&lang=en&offset=0)
 
 British pioneer of photography, best known for his photographs of India and Burma taken in the 1850s.
 
