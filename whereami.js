@@ -145,10 +145,10 @@ var cb = function callback(obj)
     var name_found = null;
 
     var circle = new ol.style.Circle({
-        radius: 2,
+        radius: 4,
         stroke: new ol.style.Stroke({
             color: [0, 0, 255, 1],
-            width: 4.5
+            width: 9
         })
     });
 
